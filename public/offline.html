@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>离线 · Solo Workspace</title>
+    <style>
+      :root { color-scheme: light dark; --canvas: #f9fbfa; --fg: #2a2e2d; --muted: #6b716f; --accent: #007c6e; }
+      @media (prefers-color-scheme: dark) { :root { --canvas: #0d0f0e; --fg: #f3f5f4; --muted: #a4aaa8; --accent: #4fb8a8; } }
+      body { margin: 0; min-height: 100dvh; display: grid; place-items: center; background: var(--canvas); color: var(--fg);
+        font: 14px/1.6 "Instrument Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; text-align: center; padding: 24px; }
+      img { width: 56px; height: 56px; border-radius: 14px; }
+      h1 { font-size: 20px; font-weight: 600; margin: 16px 0 4px; }
+      p { color: var(--muted); margin: 0 0 20px; }
+      button { height: 36px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; font: inherit; font-weight: 500; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/icons/icon-192.png" alt="" />
+      <h1>暂时连不上服务器</h1>
+      <p>数据保存在你的服务器上，联网后即可继续。</p>
+      <button onclick="location.reload()">重试</button>
+    </main>
+  </body>
+</html>
