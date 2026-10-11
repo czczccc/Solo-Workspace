@@ -30,7 +30,7 @@ export default async function KanbanPage({ searchParams }: PageProps<"/kanban">)
         description={project ? project.name : "所有项目"}
         actions={
           <Suspense>
-            <KanbanFilters projects={projects.map((p) => ({ slug: p.slug, name: p.name }))} />
+            <KanbanFilters key={`${sp.project ?? ""}|${sp.priority ?? ""}`} projects={projects.map((p) => ({ slug: p.slug, name: p.name }))} />
           </Suspense>
         }
         className="[&>div:last-child]:w-full sm:[&>div:last-child]:w-auto"
