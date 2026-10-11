@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, SquareKanban, Target } from "lucide-react";
@@ -39,9 +40,10 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   if (project.archived) projectOptions.push({ id: project.id, name: project.name, color: project.color });
 
   return (
+    <PageTransition>
     <div className="grid gap-5">
       <div>
-        <Link href="/projects" className="mb-2 inline-flex items-center text-body text-fg-muted hover:text-fg">
+        <Link href="/projects" transitionTypes={["nav-back"]} className="mb-2 inline-flex items-center text-body text-fg-muted hover:text-fg">
           <ChevronLeft className="size-4" /> 项目
         </Link>
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -109,5 +111,6 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 }

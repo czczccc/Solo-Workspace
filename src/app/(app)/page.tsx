@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageTransition } from "@/components/page-transition";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { ArrowRight, Flag } from "lucide-react";
@@ -7,6 +8,7 @@ import { QuickCapture } from "@/components/quick-capture";
 import { ProjectDot } from "@/components/tasks/task-meta";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { AnimatedNumber } from "@/components/ui/animated-number";
 import { getDb } from "@/lib/db";
 import { weekSummary } from "@/lib/data/dashboard";
 import { listMilestones, listProjects } from "@/lib/data/projects";
@@ -37,6 +39,7 @@ export default async function DashboardPage() {
   ];
 
   return (
+    <PageTransition>
     <div className="grid gap-5">
       <div>
         <p className="text-body text-fg-muted">{format(now, "M月d日 EEEE", { locale: zhCN })}</p>
@@ -47,7 +50,7 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex-row items-start justify-between gap-2 pb-3">
             <CardTitle>今日重点</CardTitle>
-            <Link href="/kanban" className="text-caption text-fg-muted hover:text-fg">
+            <Link href="/kanban" transitionTypes={["nav-tab"]} className="text-caption text-fg-muted hover:text-fg">
               看板 <ArrowRight className="inline size-3" />
             </Link>
           </CardHeader>
@@ -60,7 +63,7 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader className="flex-row items-start justify-between gap-2 pb-3">
               <CardTitle>快速记录</CardTitle>
-              <Link href="/inbox" className="text-caption text-fg-muted hover:text-fg">
+              <Link href="/inbox" transitionTypes={["nav-tab"]} className="text-caption text-fg-muted hover:text-fg">
                 收集箱 <ArrowRight className="inline size-3" />
               </Link>
             </CardHeader>
@@ -77,15 +80,15 @@ export default async function DashboardPage() {
                   {formatShortDate(week.weekStart)} – {formatShortDate(weekEndISO(week.weekStart))}
                 </p>
               </div>
-              <Link href="/review" className="text-caption text-fg-muted hover:text-fg">
+              <Link href="/review" transitionTypes={["nav-tab"]} className="text-caption text-fg-muted hover:text-fg">
                 周报 <ArrowRight className="inline size-3" />
               </Link>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid grid-cols-4 gap-2 text-center">
                 {stats.map((s) => (
-                  <div key={s.label} className="rounded-lg bg-sunken py-2">
-                    <div className={`text-title font-semibold tabular-nums ${s.className}`}>{s.value}</div>
+                  <div key={s.label} className="glass-subtle relative rounded-lg py-2">
+                    <AnimatedNumber value={s.value} className={`block text-title font-semibold tabular-nums ${s.className}`} />
                     <div className="text-caption text-fg-muted">{s.label}</div>
                   </div>
                 ))}
@@ -93,7 +96,7 @@ export default async function DashboardPage() {
               <ul className="grid gap-3">
                 {week.projects.map((p) => (
                   <li key={p.id}>
-                    <Link href={`/projects/${p.slug}`} className="block rounded-lg p-1 -m-1 hover:bg-hover">
+                    <Link href={`/projects/${p.slug}`} transitionTypes={["nav-forward"]} className="block rounded-lg p-1 -m-1 hover:bg-hover">
                       <div className="mb-1.5 flex items-center justify-between gap-2 text-body">
                         <span className="flex min-w-0 items-center gap-2 font-medium">
                           <ProjectDot color={p.color} />
@@ -119,5 +122,6 @@ export default async function DashboardPage() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

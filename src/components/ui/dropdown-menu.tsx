@@ -13,8 +13,8 @@ export function DropdownMenuContent({ className, sideOffset = 6, ...props }: Com
       <DropdownMenuPrimitive.Content
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-36 overflow-hidden rounded-popover border border-line-subtle bg-raised p-1 text-fg shadow-lg",
-          "origin-(--radix-dropdown-menu-content-transform-origin) data-[state=open]:animate-[cz-pop-in_var(--cz-duration-base)_var(--cz-ease-enter)]",
+          "glass glass-strong glass-float relative z-50 min-w-40 overflow-hidden rounded-popover p-1 text-fg",
+          "origin-(--radix-dropdown-menu-content-transform-origin) data-[state=open]:animate-[cz-pop-in_var(--cz-duration-slow)_var(--cz-ease-emphasized)]",
           className,
         )}
         {...props}
@@ -31,7 +31,7 @@ export function DropdownMenuItem({
   return (
     <DropdownMenuPrimitive.Item
       className={cn(
-        "flex h-control-sm cursor-default select-none items-center gap-2 rounded-sm px-2 text-body outline-none",
+        "relative flex h-control-md cursor-default select-none items-center gap-2 rounded-sm px-2 text-body outline-none",
         "transition duration-instant data-[highlighted]:bg-hover data-[disabled]:opacity-45 [&_svg]:size-4",
         tone === "danger" && "text-danger-fg",
         className,

@@ -83,7 +83,7 @@ export function NewProjectButton() {
         <Plus /> 新项目
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-full overflow-y-auto">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>新项目</DialogTitle>
             <DialogDescription className="sr-only">创建项目</DialogDescription>
@@ -114,7 +114,7 @@ export function EditProjectButtons({ project }: { project: Required<ProjectValue
         {project.archived ? "恢复" : "归档"}
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-full overflow-y-auto">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>编辑项目</DialogTitle>
             <DialogDescription className="sr-only">编辑项目信息</DialogDescription>

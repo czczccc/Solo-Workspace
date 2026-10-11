@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/page-header";
 import { getDb } from "@/lib/db";
@@ -22,13 +23,14 @@ export default async function KanbanPage({ searchParams }: PageProps<"/kanban">)
   );
 
   return (
+    <PageTransition>
     <>
       <PageHeader
         title="看板"
         description={project ? project.name : "所有项目"}
         actions={
           <Suspense>
-            <KanbanFilters projects={projects.map((p) => ({ slug: p.slug, name: p.name }))} />
+            <KanbanFilters key={`${sp.project ?? ""}|${sp.priority ?? ""}`} projects={projects.map((p) => ({ slug: p.slug, name: p.name }))} />
           </Suspense>
         }
         className="[&>div:last-child]:w-full sm:[&>div:last-child]:w-auto"
@@ -41,5 +43,6 @@ export default async function KanbanPage({ searchParams }: PageProps<"/kanban">)
         defaultProjectId={project?.id}
       />
     </>
+    </PageTransition>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
+import { MotionProvider } from "@/components/motion-provider";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 import "./globals.css";
 
@@ -35,8 +36,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="zh-CN" suppressHydrationWarning>
       <body className="min-h-dvh">
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
+          <MotionProvider>
+            <div aria-hidden className="ambient fixed inset-0 -z-10" />
+            {children}
+            <Toaster />
+          </MotionProvider>
         </ThemeProvider>
         <ServiceWorkerRegister />
       </body>

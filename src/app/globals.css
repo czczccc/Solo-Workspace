@@ -21,6 +21,10 @@
   }
   body {
     overscroll-behavior-y: none;
+    background: transparent;
+  }
+  html {
+    background: var(--cz-color-canvas);
   }
   /* iOS zooms into focused fields below 16px; keep them at 16px on phones. */
   @media (max-width: 767px) {
@@ -41,10 +45,10 @@
 }
 /* Room for the fixed bottom tab bar on phones. */
 @utility pb-tabbar {
-  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
 }
 @utility bottom-tabbar {
-  bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  bottom: calc(5.5rem + env(safe-area-inset-bottom));
 }
 @utility no-scrollbar {
   scrollbar-width: none;
@@ -61,5 +65,244 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Liquid Glass (iOS 26 style) built on CZ tokens                      */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --glass-tint: color-mix(in oklch, var(--cz-color-surface) 58%, transparent);
+  --glass-tint-strong: color-mix(in oklch, var(--cz-color-surface) 78%, transparent);
+  --glass-tint-subtle: color-mix(in oklch, var(--cz-color-surface) 40%, transparent);
+  --glass-rim: oklch(1 0 0 / 0.75);
+  --glass-rim-low: oklch(1 0 0 / 0.18);
+  --glass-sheen: oklch(1 0 0 / 0.55);
+  --glass-edge: oklch(0.24 0.012 170 / 0.08);
+  --glass-shadow: 0 1px 1px 0 oklch(0.24 0.012 170 / 0.04), 0 10px 30px -10px oklch(0.24 0.012 170 / 0.18);
+  --glass-shadow-float: 0 2px 6px -2px oklch(0.24 0.012 170 / 0.08), 0 22px 48px -16px oklch(0.24 0.012 170 / 0.3);
+  --glass-blur: 22px;
+  --ambient-a: oklch(0.86 0.09 182 / 0.55);
+  --ambient-b: oklch(0.88 0.07 248 / 0.45);
+  --ambient-c: oklch(0.9 0.08 72 / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --glass-tint: color-mix(in oklch, var(--cz-color-raised) 52%, transparent);
+    --glass-tint-strong: color-mix(in oklch, var(--cz-color-raised) 76%, transparent);
+    --glass-tint-subtle: color-mix(in oklch, var(--cz-color-raised) 34%, transparent);
+    --glass-rim: oklch(1 0 0 / 0.2);
+    --glass-rim-low: oklch(1 0 0 / 0.05);
+    --glass-sheen: oklch(1 0 0 / 0.12);
+    --glass-edge: oklch(1 0 0 / 0.06);
+    --glass-shadow: 0 1px 1px 0 oklch(0 0 0 / 0.3), 0 12px 32px -12px oklch(0 0 0 / 0.6);
+    --glass-shadow-float: 0 2px 6px -2px oklch(0 0 0 / 0.4), 0 24px 56px -16px oklch(0 0 0 / 0.75);
+    --ambient-a: oklch(0.45 0.1 182 / 0.45);
+    --ambient-b: oklch(0.4 0.09 248 / 0.4);
+    --ambient-c: oklch(0.42 0.08 300 / 0.25);
+  }
+}
+
+[data-theme="dark"] {
+  --glass-tint: color-mix(in oklch, var(--cz-color-raised) 52%, transparent);
+  --glass-tint-strong: color-mix(in oklch, var(--cz-color-raised) 76%, transparent);
+  --glass-tint-subtle: color-mix(in oklch, var(--cz-color-raised) 34%, transparent);
+  --glass-rim: oklch(1 0 0 / 0.2);
+  --glass-rim-low: oklch(1 0 0 / 0.05);
+  --glass-sheen: oklch(1 0 0 / 0.12);
+  --glass-edge: oklch(1 0 0 / 0.06);
+  --glass-shadow: 0 1px 1px 0 oklch(0 0 0 / 0.3), 0 12px 32px -12px oklch(0 0 0 / 0.6);
+  --glass-shadow-float: 0 2px 6px -2px oklch(0 0 0 / 0.4), 0 24px 56px -16px oklch(0 0 0 / 0.75);
+  --ambient-a: oklch(0.45 0.1 182 / 0.45);
+  --ambient-b: oklch(0.4 0.09 248 / 0.4);
+  --ambient-c: oklch(0.42 0.08 300 / 0.25);
+}
+
+/*
+ * Glass panel: translucent tint + backdrop blur/saturation, a bright specular
+ * rim (stronger top-left, fading bottom-right) and a soft inner sheen.
+ * The element must be positioned (relative/sticky/fixed) for the rim layer.
+ */
+@utility glass {
+  background-color: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-sheen),
+    inset 0 0 0 1px var(--glass-edge),
+    var(--glass-shadow);
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      150deg,
+      var(--glass-rim) 0%,
+      var(--glass-rim-low) 32%,
+      transparent 52%,
+      var(--glass-rim-low) 78%,
+      var(--glass-rim) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+}
+
+@utility glass-strong {
+  background-color: var(--glass-tint-strong);
+}
+@utility glass-subtle {
+  background-color: var(--glass-tint-subtle);
+}
+@utility glass-float {
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-sheen),
+    inset 0 0 0 1px var(--glass-edge),
+    var(--glass-shadow-float);
+}
+
+/* Users who ask for less transparency get solid surfaces. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background-color: var(--cz-color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Soft coloured light behind the glass so the material has something to refract. */
+@utility ambient {
+  background:
+    radial-gradient(38rem 30rem at 12% 8%, var(--ambient-a), transparent 70%),
+    radial-gradient(34rem 28rem at 92% 18%, var(--ambient-b), transparent 70%),
+    radial-gradient(40rem 32rem at 60% 100%, var(--ambient-c), transparent 70%),
+    var(--cz-color-canvas);
+  background-size: 140% 140%;
+  animation: ambient-drift 40s var(--cz-ease-standard) infinite alternate;
+}
+
+@keyframes ambient-drift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 60%;
+  }
+}
+
+/* Floating tab bar sits above the home indicator. */
+@utility bottom-floating {
+  bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+}
+@utility h-floating {
+  height: calc(100dvh - 1.5rem);
+}
+
+/* iOS-style press: quick spring-like shrink on touch. */
+@utility pressable {
+  transition-property: transform, color, background-color, border-color, opacity, box-shadow;
+  transition-duration: var(--cz-duration-fast);
+  transition-timing-function: var(--cz-ease-emphasized);
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Checkbox tick pops in with the emphasized (slight overshoot) curve. */
+@keyframes check-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Page transitions (React <ViewTransition>)                           */
+/* ------------------------------------------------------------------ */
+
+/* Keep chrome (sidebar, tab bar) still: only named page content animates. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.tab-switch) {
+  animation: var(--cz-duration-fast) var(--cz-ease-exit) both vt-fade reverse;
+}
+::view-transition-new(.tab-switch) {
+  animation:
+    var(--cz-duration-base) var(--cz-ease-enter) both vt-fade,
+    var(--cz-duration-slow) var(--cz-ease-enter) both vt-rise;
+}
+
+/* iOS push: new page slides in from the right, old one shifts left and dims. */
+::view-transition-old(.nav-forward) {
+  --vt-x: -30%;
+  animation:
+    var(--cz-duration-slow) var(--cz-ease-enter) both vt-slide reverse,
+    var(--cz-duration-slow) var(--cz-ease-enter) both vt-dim;
+}
+::view-transition-new(.nav-forward) {
+  --vt-x: 100%;
+  animation: var(--cz-duration-slow) var(--cz-ease-enter) both vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --vt-x: 100%;
+  animation: var(--cz-duration-slow) var(--cz-ease-enter) both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --vt-x: -30%;
+  animation:
+    var(--cz-duration-slow) var(--cz-ease-enter) both vt-slide,
+    var(--cz-duration-slow) var(--cz-ease-enter) both vt-dim reverse;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    translate: 0 10px;
+  }
+}
+@keyframes vt-slide {
+  from {
+    translate: var(--vt-x) 0;
+  }
+}
+@keyframes vt-dim {
+  to {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@keyframes sheet-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
   }
 }

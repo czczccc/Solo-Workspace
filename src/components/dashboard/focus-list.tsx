@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Plus, Star, Sun } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { transition } from "@/design-system/motion";
 import { completeTaskAction, toggleFocusAction } from "@/app/actions/tasks";
 import { TaskMetaRow } from "@/components/tasks/task-meta";
 import { TaskDialog } from "@/components/tasks/task-dialog";
@@ -37,8 +39,18 @@ export function FocusList({
         </div>
       ) : (
         <ul className="divide-y" data-testid="focus-list">
+          <AnimatePresence initial={false}>
           {tasks.map((t) => (
-            <li key={t.id} className="flex items-start gap-3 py-2.5">
+            <motion.li
+              key={t.id}
+              layout="position"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0, x: 24 }}
+              transition={transition.smooth}
+              className="overflow-hidden"
+            >
+              <div className="flex items-start gap-3 py-2.5">
               <Checkbox
                 className="mt-0.5"
                 checked={false}
@@ -61,8 +73,10 @@ export function FocusList({
               >
                 <Star className={cn(t.isFocus && "fill-current")} />
               </Button>
-            </li>
+              </div>
+            </motion.li>
           ))}
+          </AnimatePresence>
         </ul>
       )}
       <Button variant="ghost" size="sm" className="mt-2 text-fg-muted" onClick={() => setCreating(true)}>
