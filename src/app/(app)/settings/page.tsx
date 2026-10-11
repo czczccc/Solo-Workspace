@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import fs from "node:fs";
 import { Database, Download, LogOut } from "lucide-react";
 import { logout } from "@/app/login/actions";
@@ -30,6 +31,7 @@ export default async function SettingsPage() {
   const autoHours = Number(process.env.AUTO_BACKUP_HOURS ?? 24);
 
   return (
+    <PageTransition>
     <div className="mx-auto grid max-w-2xl gap-5">
       <PageHeader title="设置" description={`已登录：${session.u}`} className="mb-0" />
 
@@ -94,5 +96,6 @@ export default async function SettingsPage() {
         </Button>
       </form>
     </div>
+    </PageTransition>
   );
 }

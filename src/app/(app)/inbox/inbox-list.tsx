@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { transition } from "@/design-system/motion";
 import { Archive, ArrowRightCircle, RotateCcw, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { zhCN } from "date-fns/locale";
@@ -90,8 +92,17 @@ export function InboxList({ items, projects, view }: { items: InboxItem[]; proje
   return (
     <>
       <ul className="grid gap-2" data-testid="inbox-list">
+        <AnimatePresence initial={false} mode="popLayout">
         {items.map((item) => (
-          <li key={item.id} className="rounded-lg border bg-surface p-3 shadow-xs">
+          <motion.li
+            key={item.id}
+            layout
+            initial={{ opacity: 0, y: -12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.92, filter: "blur(4px)" }}
+            transition={transition.smooth}
+            className="glass relative rounded-lg p-3"
+          >
             <p className="whitespace-pre-wrap break-words text-body">{item.content}</p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
               <span className="text-caption text-fg-muted">
@@ -124,11 +135,12 @@ export function InboxList({ items, projects, view }: { items: InboxItem[]; proje
                 </Button>
               </div>
             </div>
-          </li>
+          </motion.li>
         ))}
+        </AnimatePresence>
       </ul>
       <Dialog open={!!converting} onOpenChange={(o) => !o && setConverting(null)}>
-        <DialogContent className="max-h-full overflow-y-auto">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>转为任务</DialogTitle>
             <DialogDescription className="line-clamp-2">{converting?.content}</DialogDescription>

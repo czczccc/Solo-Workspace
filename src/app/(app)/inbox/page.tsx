@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { QuickCapture } from "@/components/quick-capture";
@@ -19,6 +20,7 @@ export default async function InboxPage({ searchParams }: PageProps<"/inbox">) {
   const items = listInbox(db, status);
 
   return (
+    <PageTransition>
     <div className="mx-auto grid max-w-2xl gap-4">
       <PageHeader title="收集箱" description="先记下来，再决定要不要做" className="mb-0" />
       <QuickCapture />
@@ -40,5 +42,6 @@ export default async function InboxPage({ searchParams }: PageProps<"/inbox">) {
       </div>
       <InboxList items={items} projects={listProjects(db).map((p) => ({ id: p.id, name: p.name }))} view={status} />
     </div>
+    </PageTransition>
   );
 }

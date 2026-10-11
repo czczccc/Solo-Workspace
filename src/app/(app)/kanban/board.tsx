@@ -2,6 +2,7 @@
 
 import { useOptimistic, useState, useTransition } from "react";
 import { Plus } from "lucide-react";
+import { LayoutGroup, motion } from "framer-motion";
 import { toast } from "sonner";
 import { moveTaskAction } from "@/app/actions/tasks";
 import { TaskCard } from "@/components/tasks/task-card";
@@ -11,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { TASK_STATUSES, type TaskStatus } from "@/lib/db/schema";
 import { STATUS_LABEL } from "@/lib/labels";
 import { cn } from "@/lib/utils";
+import { transition } from "@/design-system/motion";
 
 const COLUMN_ACCENT: Record<TaskStatus, string> = {
   todo: "bg-sunken-foreground",
@@ -98,8 +100,8 @@ export function Board({
               aria-selected={mobileColumn === s}
               onClick={() => setMobileColumn(s)}
               className={cn(
-                "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-body",
-                mobileColumn === s ? "border-accent bg-accent text-on-accent" : "bg-surface text-fg-muted",
+                "pressable relative flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-body",
+                mobileColumn === s ? "border-accent bg-accent text-on-accent shadow-xs" : "glass-subtle border-transparent text-fg-muted",
               )}
             >
               {STATUS_LABEL[s]} <span className="text-caption opacity-80">{n}</span>
@@ -108,6 +110,7 @@ export function Board({
         })}
       </div>
 
+      <LayoutGroup>
       <div className="grid gap-4 md:grid-cols-4">
         {TASK_STATUSES.map((status) => {
           const column = optimistic.filter((t) => t.status === status);
@@ -117,7 +120,7 @@ export function Board({
               data-testid={`column-${status}`}
               aria-label={STATUS_LABEL[status]}
               className={cn(
-                "flex min-h-40 flex-col rounded-card bg-sunken p-2 md:min-h-96",
+                "glass-subtle relative flex min-h-40 flex-col rounded-card p-2 transition-shadow duration-base md:min-h-96",
                 mobileColumn !== status && "hidden md:flex",
                 dropTarget?.status === status && "shadow-ring",
               )}
@@ -139,7 +142,12 @@ export function Board({
               </header>
               <div className="flex flex-1 flex-col gap-2">
                 {column.map((t, i) => (
-                  <div key={t.id}>
+                  <motion.div
+                    key={t.id}
+                    layout="position"
+                    layoutId={`task-${t.id}`}
+                    transition={transition.layout}
+                  >
                     {dropTarget?.status === status && dropTarget.index === i && draggingId !== t.id && (
                       <div className="mb-2 h-1 rounded-full bg-accent" />
                     )}
@@ -158,7 +166,7 @@ export function Board({
                         setDropTarget(null);
                       }}
                     />
-                  </div>
+                  </motion.div>
                 ))}
                 {dropTarget?.status === status && dropTarget.index >= column.filter((t) => t.id !== draggingId).length && (
                   <div className="h-1 rounded-full bg-accent" />
@@ -178,6 +186,7 @@ export function Board({
           );
         })}
       </div>
+      </LayoutGroup>
 
       <TaskDialog
         key={editing ? `edit-${editing.id}` : "edit-none"}

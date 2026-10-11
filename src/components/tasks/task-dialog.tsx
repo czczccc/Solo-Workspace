@@ -36,7 +36,7 @@ export function TaskDialog(props: Props) {
   const { open, onOpenChange, task } = props;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-full max-w-lg overflow-y-auto p-5 sm:p-6">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{task ? "编辑任务" : "新建任务"}</DialogTitle>
           <DialogDescription className="sr-only">任务详情</DialogDescription>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import Link from "next/link";
 import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
@@ -33,19 +34,20 @@ export default async function ReviewPage({ searchParams }: PageProps<"/review">)
   }));
 
   return (
+    <PageTransition>
     <div className="grid gap-5">
       <PageHeader
         title="周报"
         description={`${formatShortDate(weekStart)} – ${formatShortDate(weekEndISO(weekStart))}${weekStart === thisWeek ? "（本周）" : ""}`}
         actions={
           <div className="flex gap-1">
-            <Link href={`/review?week=${shiftWeek(weekStart, -1)}`} className={buttonVariants({ variant: "secondary", size: "icon" })} aria-label="上一周">
+            <Link href={`/review?week=${shiftWeek(weekStart, -1)}`} transitionTypes={["nav-back"]} className={buttonVariants({ variant: "secondary", size: "icon" })} aria-label="上一周">
               <ChevronLeft />
             </Link>
             {weekStart !== thisWeek && (
               <Link href="/review" className={buttonVariants({ variant: "secondary" })}>本周</Link>
             )}
-            <Link href={`/review?week=${shiftWeek(weekStart, 1)}`} className={buttonVariants({ variant: "secondary", size: "icon" })} aria-label="下一周">
+            <Link href={`/review?week=${shiftWeek(weekStart, 1)}`} transitionTypes={["nav-forward"]} className={buttonVariants({ variant: "secondary", size: "icon" })} aria-label="下一周">
               <ChevronRight />
             </Link>
           </div>
@@ -132,5 +134,6 @@ export default async function ReviewPage({ searchParams }: PageProps<"/review">)
         />
       </div>
     </div>
+    </PageTransition>
   );
 }

@@ -9,11 +9,11 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   await requireSession();
   const inboxCount = listInbox(getDb(), "open").length;
   return (
-    <div className="flex min-h-dvh">
+    <div className="flex min-h-dvh md:gap-2 md:p-3 md:pr-0">
       <Sidebar inboxCount={inboxCount} />
       <div className="flex min-w-0 flex-1 flex-col">
         <MobileHeader />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-tabbar pt-4 md:px-8 md:pb-10 md:pt-8">
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-tabbar pt-4 md:px-8 md:pb-10 md:pt-5">
           {children}
         </main>
       </div>

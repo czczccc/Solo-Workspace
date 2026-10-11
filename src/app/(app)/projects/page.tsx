@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import Link from "next/link";
 import { Flag, Target } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
@@ -17,13 +18,14 @@ export default async function ProjectsPage() {
   const archived = all.filter((p) => p.archived);
 
   return (
+    <PageTransition>
     <>
       <PageHeader title="项目" description={`${active.length} 个进行中的项目`} actions={<NewProjectButton />} />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {active.map((p) => {
           const msDone = p.milestones.filter((m) => m.status === "done").length;
           return (
-            <Link key={p.id} href={`/projects/${p.slug}`} className="group">
+            <Link key={p.id} href={`/projects/${p.slug}`} transitionTypes={["nav-forward"]} className="group">
               <Card className="h-full transition group-hover:border-line-strong" style={{ borderTop: `3px solid ${p.color}` }}>
                 <CardHeader className="flex-row items-start justify-between gap-2 pb-3">
                   <div className="min-w-0">
@@ -61,7 +63,7 @@ export default async function ProjectsPage() {
           <ul className="flex flex-wrap gap-2">
             {archived.map((p) => (
               <li key={p.id}>
-                <Link href={`/projects/${p.slug}`} className="rounded-control border px-3 py-1.5 text-body text-fg-muted hover:bg-hover">
+                <Link href={`/projects/${p.slug}`} transitionTypes={["nav-forward"]} className="rounded-control border px-3 py-1.5 text-body text-fg-muted hover:bg-hover">
                   {p.name}
                 </Link>
               </li>
@@ -70,5 +72,6 @@ export default async function ProjectsPage() {
         </div>
       )}
     </>
+    </PageTransition>
   );
 }

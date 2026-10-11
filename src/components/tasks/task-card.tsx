@@ -42,7 +42,7 @@ export function TaskCard({
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       className={cn(
-        "group relative rounded-lg border bg-surface p-3 shadow-xs transition hover:border-line-strong",
+        "glass group relative rounded-lg p-3 transition-[opacity,box-shadow] duration-base hover:glass-float",
         draggable && "cursor-grab active:cursor-grabbing",
         dragging && "opacity-40",
       )}

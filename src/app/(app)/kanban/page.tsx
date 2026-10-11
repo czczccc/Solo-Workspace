@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageTransition } from "@/components/page-transition";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/page-header";
 import { getDb } from "@/lib/db";
@@ -22,6 +23,7 @@ export default async function KanbanPage({ searchParams }: PageProps<"/kanban">)
   );
 
   return (
+    <PageTransition>
     <>
       <PageHeader
         title="看板"
@@ -41,5 +43,6 @@ export default async function KanbanPage({ searchParams }: PageProps<"/kanban">)
         defaultProjectId={project?.id}
       />
     </>
+    </PageTransition>
   );
 }

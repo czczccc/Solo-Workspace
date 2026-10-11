@@ -7,4 +7,4 @@ export {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/design-system/components/ui/dialog";
+} from "./sheet-dialog";
